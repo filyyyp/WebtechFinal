@@ -73,6 +73,7 @@ function LoadGame(level){
     console.log(task);
     var rows = task.split(',');
 
+
     _pieces = [];
     _mouse = {x:0,y:0};
     _currentPiece = null;
@@ -340,7 +341,10 @@ function backup() {
 }
 
 function stepBack() {
-    if (_backup.length !== 0) {
+    if(_backup === undefined)
+        return 0;
+    if (_backup[0] !== undefined) {
+
         var tmp1 = [];
         var tmp2 = [];
         tmp1.xPos = _backup[0].xPosF;
@@ -418,7 +422,6 @@ function setCookie(username) {
     for(var i= 0;i<_pieces.length;i++){
         _piecesString = _piecesString + _pieces[i].type + ","
     }
-
 
     var exdays = 30;
 
