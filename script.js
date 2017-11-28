@@ -110,14 +110,9 @@ function setCanvas(){
 }
 
 function onClick(e){
-    if(e.layerX || e.layerX == 0){
-        _mouse.x = e.layerX - _canvas.offsetLeft;
-        _mouse.y = e.layerY - _canvas.offsetTop;
-    }
-    else if(e.offsetX || e.offsetX == 0){
-        _mouse.x = e.offsetX - _canvas.offsetLeft;
-        _mouse.y = e.offsetY - _canvas.offsetTop;
-    }
+    _mouse.x = e.layerX;
+    _mouse.y = e.layerY;
+
     _currentPiece = checkPieceClicked();
     if(_currentPiece != null){
         _stage.clearRect(_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);
@@ -134,16 +129,11 @@ function onClick(e){
 
 function updatePiecesMove(e){
     _currentDropPiece = null;               //na ktorom skonci ten sa vymeni
-    if(e.layerX || e.layerX == 0){
-        _mouse.x = e.layerX - _canvas.offsetLeft;
-        _mouse.y = e.layerY - _canvas.offsetTop;
 
-    }
-    else if(e.offsetX || e.offsetX == 0){
-        _mouse.x = e.offsetX - _canvas.offsetLeft;
-        _mouse.y = e.offsetY - _canvas.offsetTop;
+    _mouse.x = e.layerX;
+    _mouse.y = e.layerY;
 
-    }
+
     _stage.drawImage(_typeBlocks['E'].image,_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);  //tahany blok prekreslenie pozadia pod nim
     var i;
     var piece;
