@@ -193,7 +193,7 @@ function pieceDropped(e){                   //vymena blokov
     document.onmousemove = null;
     document.onmouseup = null;
     if(_currentDropPiece != null){
-        //backup();
+        backup();
         if(backupSteps !== 3)
             backupSteps++;
 
@@ -316,40 +316,58 @@ function drawImages() {
 
 function backup() {
 
-    var tmp = {rotationF:_currentPiece.rotation,imgF:_currentPiece.img,typeF:_currentPiece.type,rotationW:_currentDropPiece.rotation,imgW:_currentDropPiece.img,typeW:_currentDropPiece.type};
+    var tmp = {xPosF:_currentPiece.xPos,yPosF:_currentPiece.yPos,rotationF:_currentPiece.rotation,imgF:_currentPiece.img,typeF:_currentPiece.type,xPosW:_currentDropPiece.xPos,yPosW:_currentDropPiece.yPos,rotationW:_currentDropPiece.rotation,imgW:_currentDropPiece.img,typeW:_currentDropPiece.type};
     if(_backup == null){
         _backup = [];
         _backup.push(tmp);
 
-        console.log(_backup.length);
-        console.log(_backup);
     }
     else if(_backup.length == 1){
         _backup.push(_backup[0]);
         _backup[0] = tmp;
-        console.log(_backup);
-    }
-    else{
-        _backup[2] = _backup[1];
-        _backup[1] = _backup[0];
-        _backup[0] = _piecesString;
-    }
 
-    console.log(_backup.length);
-    console.log(_backup);
-  //  if(_backup.length = 1)
+    }
+    else if(_backup.length ==2 ){
+        _backup.push(_backup[1]);
+        _backup[1] = _backup[0];
+        _backup[0] = tmp;
+    }
+    else {
+        _backup[2]=_backup[1];
+        _backup[1]=_backup[0];
+        _backup[0] = tmp;
+    }
 }
 
-function stepBack(){
-    if(backupSteps>0){
-        console.log('1');
-        var temp = _backup[0].split(',');
-        console.log(temp);
-        for(var i= 0;i<_pieces.length;i++){
-            _pieces[i].type = temp[i];
-            console.log('for');
+function stepBack() {
+    if (_backup.length !== 0) {
+        var tmp1 = [];
+        var tmp2 = [];
+        tmp1.xPos = _backup[0].xPosF;
+        tmp1.yPos = _backup[0].yPosF;
+        tmp1.rotation = _backup[0].rotationF;
+        tmp1.img = _backup[0].imgF;
+        tmp1.type = _backup[0].typeF;
 
+        tmp2.xPos = _backup[0].xPosW;
+        tmp2.yPos = _backup[0].yPosW;
+        tmp2.rotation = _backup[0].rotationW;
+        tmp2.img = _backup[0].imgW;
+        tmp2.type = _backup[0].typeW;
+
+        for(var i = 0;i<_pieces.length;i++){
+            if((_pieces[i].xPos == tmp1.xPos)&&(_pieces[i].yPos == tmp1.yPos)){
+                _pieces[i].rotation = tmp1.rotation;
+                _pieces[i].img = tmp1.img;
+                _pieces[i].type = tmp1.type;
+            }
+            if((_pieces[i].xPos == tmp2.xPos)&&(_pieces[i].yPos == tmp2.yPos)){
+                _pieces[i].rotation = tmp2.rotation;
+                _pieces[i].img = tmp2.img;
+                _pieces[i].type = tmp2.type;
+            }
         }
+        _backup.splice(0,1);
         drawImages();
     }
     else
