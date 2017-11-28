@@ -4,6 +4,7 @@ var NumberOfBlocksHorizontal ;
 const _puzzleWidth = 800;
 const _puzzleHeight = 800;
 const PUZZLE_HOVER_TINT = '#009900';
+var delimiter = "---"; //pre cookies
 
 var _stage;
 var _canvas;
@@ -41,7 +42,7 @@ function init() {
     LoadGame(levelGame);
     setCanvas();
     drawImages();
-    setCookie(username);
+
     document.onmousedown = onClick;
 }
 
@@ -70,7 +71,7 @@ function LoadGame(level){
     var task = game.task;
 
     task =task.replace(/;/g,',');
-    console.log(task);
+
     var rows = task.split(',');
 
 
@@ -410,27 +411,95 @@ function xml2json(xml) {
     }
 }
 
-function readCookies() {
+function readCookieToGame(username) {
+    var myUserArray=getCookie(username);
 
-    var ca = document.cookie.split(';');
+    console.log(myUserArray[1].split('%2C'));
+    level = myUserArray[0];
 
-    console.log(ca);
+    var game = json.rolltheball.games.game[level];
+    NumberOfBlocksHorizontal = game.size.horizontal;
+    NumberOfBlocksVertical = game.size.vertical;
+    _pieceWidth =_puzzleWidth / NumberOfBlocksVertical;
+    _pieceHeight =_puzzleHeight / NumberOfBlocksHorizontal;
+
+
+
+    var rows = myUserArray[1].split('%2C'); // tu sa vlozi aktualne rozohrana hra
+
+    _pieces = [];
+    _mouse = {x:0,y:0};
+    _currentPiece = null;
+    _currentDropPiece = null;
+    var i;
+    var xPos = 0;
+    var yPos = 0;
+    for(i = 0;i < NumberOfBlocksVertical * NumberOfBlocksHorizontal;i++){
+        var piece = {};
+        piece.xPos = xPos;
+        piece.yPos = yPos;
+        piece.img = _typeBlocks[rows[i]].image;
+        piece.type = rows[i];
+
+        if(((rows[i]).match(/\d+/))!== null)
+            piece.rotation = (rows[i]).match(/\d+/)[0];
+        else
+            piece.rotation = 0;
+
+        _pieces.push(piece);
+        xPos += _pieceWidth;
+        if(xPos >= _puzzleWidth){
+            xPos = 0;
+            yPos += _pieceHeight;
+        }
+    }
+    drawImages();
+
 }
 
 function setCookie(username) {
     var _piecesString = [];
     for(var i= 0;i<_pieces.length;i++){
-        _piecesString = _piecesString + _pieces[i].type + ","
+        if(i<_pieces.length-1)
+            _piecesString = _piecesString + _pieces[i].type + ',';
+        else
+            _piecesString = _piecesString + _pieces[i].type;
     }
 
-    var exdays = 30;
+    //meno level rozohrane progressVsetkych skore
+    var userdata=levelGame+delimiter+_piecesString + delimiter+"progress"+delimiter+"score";
+    createCookie(username, userdata);
+    console.log(_piecesString)
 
 
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = username + '=' + _piecesString + ";" + expires + ";path=/";
+}
 
+function createCookie(name, value, days) {
+    if (days) {
 
-    
+        var date=new Date();
+        date.setTime(date.getTime()+ (days*24*60*60*1000));
+        var expires=date.toGMTString();
+
+    }
+
+    else var expires = "";
+
+    cookieString= name + "=" + escape (value);
+
+    if (expires)
+        cookieString += "; expires=" + expires;
+
+    document.cookie=cookieString;
+}
+
+function getCookie(name) {
+    var nameEquals = name + "=";
+    var whole_cookie=document.cookie.split(nameEquals)[1].split(";")[0]; // get only the value of the cookie we need
+    var crumbs=whole_cookie.split(delimiter);
+    return crumbs; // return the information parts as an array
+}
+
+function deleteCookie(name){
+    createCookie(name, "", -1);
 }
