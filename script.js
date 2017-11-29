@@ -451,8 +451,11 @@ function backup() {
 }
 
 function stepBack() {
-    if(_backup === undefined)
-        return 0;
+    if(_backup === undefined){
+        alert('Nemozte sa vratit spat');
+        return -1;
+    }
+
     if (_backup[0] !== undefined) {
 
         var tmp1 = [];
@@ -490,7 +493,13 @@ function stepBack() {
         alert('Nemozte sa vratit spat');
 }
 
+function resetLevel() {
+    if(_backup != undefined)
+        _backup.splice(0,3);     //vymazanie predchadzjucich krokov
+    LoadGame(levelGame);
+    drawImages()
 
+}
 
 
 function xml2json(xml) {
@@ -523,7 +532,8 @@ function xml2json(xml) {
 }
 
 function readCookieToGame(username) {
-    _backup.splice(0,3);     //vymazanie predchadzjucich krokov
+    if(_backup != undefined)
+        _backup.splice(0,3);     //vymazanie predchadzjucich krokov
     var myUserArray=getCookie(username);
 
     console.log(myUserArray[1].split('%2C'));
