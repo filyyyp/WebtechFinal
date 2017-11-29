@@ -44,13 +44,11 @@ function init() {
     drawImages();
 
     document.onmousedown = onClick;
-    /*
-    $('#canvas').on("touchstart", function (e, touch) {
-        onClick(e);
-        console.log((e.originalEvent.touches[0].clientX-e.originalEvent.touches[0].target.offsetLeft) + " " + (e.originalEvent.touches[0].clientY-e.originalEvent.touches[0].target.offsetTop));
 
+    $('#canvas').on("touchstart", function (e, touch) {
+        onClickT((e.originalEvent.touches[0].clientX-e.originalEvent.touches[0].target.offsetLeft),(e.originalEvent.touches[0].clientY-e.originalEvent.touches[0].target.offsetTop));
     });
-    */
+
 }
 
 function LoadImages() {
@@ -132,7 +130,30 @@ function onClick(e){
 
         document.onmousemove = updatePiecesMove;
         document.onmouseup = pieceDropped;
+    }
+}
 
+
+function onClickT(x,y){
+    _mouse.x = x;
+    _mouse.y = y;
+
+    _currentPiece = checkPieceClicked();
+
+    if(_currentPiece != null){
+        _stage.clearRect(_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);
+        _stage.save();
+        _stage.globalAlpha = .9;
+        _stage.drawImage(_currentPiece.img, _currentPiece.sx, _currentPiece.sy, _pieceWidth, _pieceHeight, _mouse.x - (_pieceWidth / 2), _mouse.y - (_pieceHeight / 2), _pieceWidth, _pieceHeight);
+        _stage.restore();
+
+        $('#canvas').on("touchmove", function (e, touch) {
+            updatePiecesMoveT((e.originalEvent.touches[0].clientX-e.originalEvent.touches[0].target.offsetLeft),(e.originalEvent.touches[0].clientY-e.originalEvent.touches[0].target.offsetTop));
+        });
+
+        $('#canvas').on("touchend", function (e, touch) {
+            pieceDropped();
+        });
     }
 }
 
@@ -141,6 +162,51 @@ function updatePiecesMove(e){
 
     _mouse.x = e.layerX;
     _mouse.y = e.layerY;
+
+
+    _stage.drawImage(_typeBlocks['E'].image,_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);  //tahany blok prekreslenie pozadia pod nim
+    var i;
+    var piece;
+    for(i = 0;i < _pieces.length;i++){
+        piece = _pieces[i];
+        if(piece == _currentPiece){                                                         //ten isty
+            continue;
+        }
+        drawImage(piece.xPos,piece.yPos,piece.img,piece.rotation);                          //prekreslovanie kuskov aby na nich neostal tien od tahaneho obrazku
+
+        if(_currentDropPiece == null){
+            if(_mouse.x < piece.xPos || _mouse.x > (piece.xPos + _pieceWidth) || _mouse.y < piece.yPos || _mouse.y > (piece.yPos + _pieceHeight)){
+                //NOT OVER
+            }
+            else if(  ((((piece.xPos)>(_currentPiece.xPos))&&((piece.xPos)<(_currentPiece.xPos+_pieceWidth+1)))&&(piece.yPos===_currentPiece.yPos)) ||  //osetrenie aby sa dalo posuvat len o jeden blok
+                ((((piece.xPos)<(_currentPiece.xPos))&&((piece.xPos)>(_currentPiece.xPos-_pieceWidth-1)))&&(piece.yPos===_currentPiece.yPos)) ||
+                ((((piece.yPos)>(_currentPiece.yPos))&&((piece.yPos)<(_currentPiece.yPos+_pieceWidth+1)))&&(piece.xPos===_currentPiece.xPos)) ||
+                ((((piece.yPos)<(_currentPiece.yPos))&&((piece.yPos)>(_currentPiece.yPos-_pieceWidth-1)))&&(piece.xPos===_currentPiece.xPos)))
+            {
+                if(piece.img == _typeBlocks['E'].image) //moze sa posuvat len na empty blok
+                {
+                    _currentDropPiece = piece;
+                    _stage.save();
+                    _stage.globalAlpha = .4;
+                    _stage.fillStyle = PUZZLE_HOVER_TINT;
+                    _stage.fillRect(_currentDropPiece.xPos,_currentDropPiece.yPos,_pieceWidth, _pieceHeight);
+                    _stage.restore();
+                }
+            }
+        }
+    }
+    _stage.save();
+    _stage.globalAlpha = .6;
+    drawImage(_mouse.x - (_pieceWidth / 2), _mouse.y - (_pieceHeight / 2),_currentPiece.img,_currentPiece.rotation); // nastavit ktory obrazok sa ma zobrazit pri tahani
+    _stage.restore();
+
+}
+
+function updatePiecesMoveT(x,y){
+    _currentDropPiece = null;               //na ktorom skonci ten sa vymeni
+
+    _mouse.x = x;
+    _mouse.y = y;
 
 
     _stage.drawImage(_typeBlocks['E'].image,_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);  //tahany blok prekreslenie pozadia pod nim
@@ -218,6 +284,8 @@ function pieceDropped(e){                   //vymena blokov
 
     resetPuzzleAndCheckWin();
 }
+
+
 
 function resetPuzzleAndCheckWin(){
     _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
