@@ -35,15 +35,22 @@ $.ajax({
 });
 
 function nextLevel() {
+    _backup.splice(0,3);     //vymazanie predchadzjucich krokov
     levelGame++;
     scoreall = scoreall + scorelvl;
     document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
-    var levelhry =Number(levelGame);
-    levelhry++;
-    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
+    if(levelGame < 10){
+        var levelhry =Number(levelGame);
+        levelhry++;
+        document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
 
-    LoadGame(levelGame);
-    drawImages()
+        LoadGame(levelGame);
+        drawImages()
+    }
+    else {
+        console.log("koniec hry")
+    }
+
 }
 
 function init() {
@@ -516,6 +523,7 @@ function xml2json(xml) {
 }
 
 function readCookieToGame(username) {
+    _backup.splice(0,3);     //vymazanie predchadzjucich krokov
     var myUserArray=getCookie(username);
 
     console.log(myUserArray[1].split('%2C'));
