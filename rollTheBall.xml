@@ -92,6 +92,32 @@
   <games>
     <game>
       <size>
+        <vertical>3</vertical>
+        <horizontal>3</horizontal>
+      </size>
+      <task>T90,T180,E;S0,D0,F180;E,T0,T270</task>
+      <solution>E,T90,T180;S0,D0,F180;T0,T270,E</solution>
+
+    </game>
+    <game>
+      <size>
+        <vertical>3</vertical>
+        <horizontal>3</horizontal>
+      </size>
+      <task>E,E,T90;D0,D0,T180;S180,D90,F180</task>
+      <solution>T90,D90,T180;D0,E,D0;S180,E,F180</solution>
+      <solution>E,E,E;T90,D90,T180;S180,E,F180</solution>
+    </game>
+    <game>
+      <size>
+        <vertical>3</vertical>
+        <horizontal>3</horizontal>
+      </size>
+      <task>S0,E,F0;T180,T0,E;T270,T0,D0</task>
+      <solution>S0,E,F0;T0,T180,D0;E,T0,T270</solution>
+    </game>
+    <game>
+      <size>
         <vertical>4</vertical>
         <horizontal>4</horizontal>
       </size>
@@ -103,9 +129,27 @@
         <vertical>4</vertical>
         <horizontal>4</horizontal>
       </size>
+      <task>F0,E,E,E;E,E,D0,T270;E,E,T0,T180;S270,E,E,E</task>
+      <solution>F0,E,E,E;D0,E,E,E;T0,T180,E,E;S270,T270,E,E</solution>
+      <solution>F0,E,E,E;T0,T180,E,E;E,D0,E,E;S270,T270,E,E</solution>
+    </game>
+    <game>
+      <size>
+        <vertical>4</vertical>
+        <horizontal>4</horizontal>
+      </size>
+      <task>F0,B,B,B;E,B,B,D0;B,B,B,D0;S180,B,B,B</task>
+      <solution>F0,E,E,E;D0,E,E,E;D0,E,E,E;S180,E,E,E</solution>
+    </game>
+    <game>
+      <size>
+        <vertical>4</vertical>
+        <horizontal>4</horizontal>
+      </size>
       <task>D90,T90,E,E;E,B,D90,T180;D0,T180,T90,T270;S180,E,T0,F90</task>
       <solution>E,E,E,E;T90,D90,D90,T180;D0,E,T90,T270;S0,E,T0,F270</solution>
       <solution>N,N,N,N;N,N,N,N;T90,D90,T180,N;S180,N,T0,F90</solution>
+      <solution>E,E,E,E;T90,D90,T180,E;D0,T90,T270,E;S180,T0,D90,F90</solution>
     </game>
     <game>
       <size>
@@ -114,17 +158,23 @@
       </size>
       <task>T90,T270,D90,T0;B,T180,D90,E;B,F90,B,D0;S270,B,B,E</task>
       <solution>N,N,N,N;T90,D90,T180,N;T0,F90,D0,N;S270,D90,T270,N</solution>
-      //
     </game>
     <game>
       <size>
         <vertical>5</vertical>
         <horizontal>5</horizontal>
       </size>
-      <task>E,F0,E,S0,E;E,D0,E,T90,T180;D0,T90,D90,D90,E;T0,E,T90,T270,D0;T270,T270,D0,T90,B</task>
-      <solution>N,F0,N,S0,N;N,D0,N,T90,T180;N,T0,D90,D90,T270;N,N,N,N,N;N,N,N,N,N</solution>
-      <solution>N,F0,N,S0,N;N,D0,N,T90,T180;N,D0,N,N,D0;N,T0,D90,D90,T270;N,N,N,N,N</solution>
-      <solution>N,F0,N,S0,N;N,D0,N,D0,N;N,D0,N,D0,N;N,T0,D90,T270,N;N,N,N,N,N</solution>
+      <task>T90,B,E,S0,D0;B,E,D90,B,E;D0,E,B,B,B;E,B,E,B,B;F180,E,T270,E,D90</task>
+      <solution>E,E,E,S0,E;E,E,E,D0,E;E,E,E,D0,E;T90,D90,D90,T270,E;F180,E,E,E,E</solution>
+      <solution>E,E,E,S0,E;T90,D90,D90,T270,E;D0,E,E,E,E;D0,E,E,E,E;F180,E,E,E,E</solution>
+    </game>
+    <game>
+      <size>
+        <vertical>5</vertical>
+        <horizontal>5</horizontal>
+      </size>
+      <task>T270,T90,E,S0,T270;E,E,E,T90,E;E,E,B,B,B;B,B,E,E,E;F180,E,E,T270,T90</task>
+      <solution>E,E,E,S0,E;E,E,T90,T270,E;E,T90,T270,E,E;T90,T270,E,E,E;F180,E,E,E,E</solution>
     </game>
   </games>
 </rolltheball>  

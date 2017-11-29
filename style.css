@@ -1,3 +1,10 @@
+#time{
+    text-align: center;
+    font-size: 50px;
+    background-color: #e7e8ea;
+}
 #canvas{
-    margin: 50px;
+    margin-top: 50px;
+    margin-left: 10%;
+    background-color: #e7e8ea;
 }

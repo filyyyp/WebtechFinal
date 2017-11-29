@@ -1,29 +1,29 @@
+const _puzzleHeight = document.getElementById('hra').clientWidth*0.8;
+const _puzzleWidth = document.getElementById('hra').clientWidth*0.8;
 
-var NumberOfBlocksVertical ;
-var NumberOfBlocksHorizontal ;
-const _puzzleWidth = 800;
-const _puzzleHeight = 800;
 const PUZZLE_HOVER_TINT = '#009900';
 var delimiter = "---"; //pre cookies
-
+var NumberOfBlocksVertical ;
+var NumberOfBlocksHorizontal ;
+var json;
 var _stage;
 var _canvas;
-
 var _pieces;
 var _pieceWidth;
 var _pieceHeight;
 var _currentPiece;
 var _currentDropPiece;
 var _mouse;
-var json;
 var _typeBlocks = [];
 var _typeBlock;
 var _backup;
 
-
-var levelGame=2;
+var scorelvl;
+var scoreall = 0;
+var levelGame=0;
 var username = "jozo";
 var backupSteps = 0;
+var touchM = false;
 
 $.ajax({
     async: false,
@@ -34,19 +34,29 @@ $.ajax({
     }
 });
 
-function init() {
-   // var game = json.rolltheball.games;
-   // console.log(game);
+function nextLevel() {
+    levelGame++;
+    scoreall = scoreall + scorelvl;
+    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
+    var levelhry =Number(levelGame);
+    levelhry++;
+    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
 
+    LoadGame(levelGame);
+    drawImages()
+}
+
+function init() {
     LoadImages();
     LoadGame(levelGame);
     setCanvas();
     drawImages();
 
-    document.onmousedown = onClick;
+    _canvas.onmousedown = onClick;
 
     $('#canvas').on("touchstart", function (e, touch) {
-        onClickT((e.originalEvent.touches[0].clientX-e.originalEvent.touches[0].target.offsetLeft),(e.originalEvent.touches[0].clientY-e.originalEvent.touches[0].target.offsetTop));
+        onClickT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop)));
+        touchM=true;
     });
 
 }
@@ -74,6 +84,15 @@ function LoadGame(level){
     _pieceWidth =_puzzleWidth / NumberOfBlocksVertical;
     _pieceHeight =_puzzleHeight / NumberOfBlocksHorizontal;
     var task = game.task;
+    scorelvl = 1000;
+    var levelhry =Number(levelGame);
+    levelhry++;
+    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
+    document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
+    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
+
+
+
 
     task =task.replace(/;/g,',');
 
@@ -128,8 +147,8 @@ function onClick(e){
         _stage.drawImage(_currentPiece.img, _currentPiece.sx, _currentPiece.sy, _pieceWidth, _pieceHeight, _mouse.x - (_pieceWidth / 2), _mouse.y - (_pieceHeight / 2), _pieceWidth, _pieceHeight);
         _stage.restore();
 
-        document.onmousemove = updatePiecesMove;
-        document.onmouseup = pieceDropped;
+        _canvas.onmousemove = updatePiecesMove;
+        _canvas.onmouseup = pieceDropped;
     }
 }
 
@@ -148,11 +167,13 @@ function onClickT(x,y){
         _stage.restore();
 
         $('#canvas').on("touchmove", function (e, touch) {
-            updatePiecesMoveT((e.originalEvent.touches[0].clientX-e.originalEvent.touches[0].target.offsetLeft),(e.originalEvent.touches[0].clientY-e.originalEvent.touches[0].target.offsetTop));
+            updatePiecesMoveT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop)));
         });
 
         $('#canvas').on("touchend", function (e, touch) {
-            pieceDropped();
+            if(touchM)
+                pieceDropped();
+            touchM=false;
         });
     }
 }
@@ -265,8 +286,8 @@ function checkPieceClicked(){
 }
 
 function pieceDropped(e){                   //vymena blokov
-    document.onmousemove = null;
-    document.onmouseup = null;
+    _canvas.onmousemove = null;
+    _canvas.onmouseup = null;
     if(_currentDropPiece != null){
         backup();
         if(backupSteps !== 3)
@@ -280,8 +301,11 @@ function pieceDropped(e){                   //vymena blokov
         _currentDropPiece.rotation = tmp.rotation;
         _currentDropPiece.type = tmp.type;
         _currentDropPiece = null;
-    }
 
+        scorelvl = scorelvl - 10;
+        document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
+        
+    }
     resetPuzzleAndCheckWin();
 }
 
@@ -295,8 +319,7 @@ function resetPuzzleAndCheckWin(){
     var piece;
     var gameSolution;
     var type;
-
-    if(json.rolltheball.games.game[levelGame].solution.length>30)                                                               // hra ma jeden vysledok
+    if(json.rolltheball.games.game[levelGame].solution.length>27)                                                               // hra ma jeden vysledok
     {
         gameSolution = json.rolltheball.games.game[levelGame].solution;
         gameSolution = gameSolution.replace(/;/g,',');
@@ -357,7 +380,11 @@ function gameOver(){
     document.onmousedown = null;
     document.onmousemove = null;
     document.onmouseup = null;
-    initPuzzle();
+    document.touchstart=null;
+    document.touchmove=null;
+    document.touchend;
+
+    nextLevel();
 }
 
 function drawImage(x,y,img,angle) {
@@ -448,6 +475,8 @@ function stepBack() {
             }
         }
         _backup.splice(0,1);
+        scorelvl = scorelvl + 10;
+        document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
         drawImages();
     }
     else
@@ -490,9 +519,18 @@ function readCookieToGame(username) {
     var myUserArray=getCookie(username);
 
     console.log(myUserArray[1].split('%2C'));
-    level = myUserArray[0];
+    levelGame = myUserArray[0];
+    scorelvl = myUserArray[2];
+    scoreall = myUserArray[3];
 
-    var game = json.rolltheball.games.game[level];
+    var levelhry =Number(levelGame);
+    levelhry++;
+    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
+    document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
+    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
+
+
+    var game = json.rolltheball.games.game[levelGame];
     NumberOfBlocksHorizontal = game.size.horizontal;
     NumberOfBlocksVertical = game.size.vertical;
     _pieceWidth =_puzzleWidth / NumberOfBlocksVertical;
@@ -542,11 +580,8 @@ function setCookie(username) {
     }
 
     //meno level rozohrane progressVsetkych skore
-    var userdata=levelGame+delimiter+_piecesString + delimiter+"progress"+delimiter+"score";
+    var userdata=levelGame+delimiter+_piecesString +delimiter + scorelvl + delimiter + scoreall;
     createCookie(username, userdata);
-    console.log(_piecesString)
-
-
 }
 
 function createCookie(name, value, days) {
@@ -578,3 +613,25 @@ function getCookie(name) {
 function deleteCookie(name){
     createCookie(name, "", -1);
 }
+
+function checkTime(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    // add a zero in front of numbers<10
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('time').innerHTML = "Aktuálny čas: "+  h + ":" + m + ":" + s;
+    t = setTimeout(function() {
+        startTime()
+    }, 500);
+}
+startTime();

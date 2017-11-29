@@ -9,10 +9,34 @@
 </head>
 <body onload="init()">
 
-<canvas id="canvas"></canvas>
-<button onclick="stepBack()">BACK</button>
-<button onclick="readCookieToGame('jozo')">Nacitaj ulozenu hru</button>
-<button onclick="setCookie('jozo')">Uloz hru</button>
+<div class="row">
+    <div class="col-12">
+        <div id="time"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6" id="hra">
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="col-6">
+        <div id="aktualnyLevel"></div>
+        <div id="aktualneSkore"></div>
+        <div id="celkoveSkore"></div>
+        <div id="najlepsiHraci"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <button onclick="stepBack()">BACK</button>
+        <button onclick="readCookieToGame('jozo')">Nacitaj ulozenu hru</button>
+        <button onclick="setCookie('jozo')">Uloz hru</button>
+    </div>
+</div>
+
+
+
 
 
 
