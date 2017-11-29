@@ -44,6 +44,13 @@ function init() {
     drawImages();
 
     document.onmousedown = onClick;
+    /*
+    $('#canvas').on("touchstart", function (e, touch) {
+        onClick(e);
+        console.log((e.originalEvent.touches[0].clientX-e.originalEvent.touches[0].target.offsetLeft) + " " + (e.originalEvent.touches[0].clientY-e.originalEvent.touches[0].target.offsetTop));
+
+    });
+    */
 }
 
 function LoadImages() {
@@ -214,7 +221,7 @@ function pieceDropped(e){                   //vymena blokov
 
 function resetPuzzleAndCheckWin(){
     _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
-    setCookie(username);
+
     var gameWin = true;  //nastavit na true aby skoncila hra
     var i;
     var piece;
