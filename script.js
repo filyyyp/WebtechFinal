@@ -520,8 +520,8 @@ function readCookieToGame(username) {
 
     console.log(myUserArray[1].split('%2C'));
     levelGame = myUserArray[0];
-    scorelvl = myUserArray[2];
-    scoreall = myUserArray[3];
+    scorelvl = Number(myUserArray[2]);
+    scoreall = Number(myUserArray[3]);
 
     var levelhry =Number(levelGame);
     levelhry++;
