@@ -589,6 +589,17 @@ function readScoreCookie() {
 
 function setUser(name) {
     username=name;
+    var najvyssie = document.getElementById("najvyssieDosiahnute");
+    var sett=false;
+    for(var i = 0;i<scoreAllPlayers.length;i++){
+        if(scoreAllPlayers[i].username == name){
+            najvyssie.innerHTML = "Vaše najvyššie dosiahnuté skóre je: " + scoreAllPlayers[i].score;
+            sett = true;
+        }
+
+    }
+    if(sett===false)
+        najvyssie.innerHTML = "Nemáte najvyššie skóre";
 }
 
 function setCookie() {
