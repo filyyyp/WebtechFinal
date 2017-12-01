@@ -1,21 +1,15 @@
 #time{
-    text-align: center;
     font-size: 50px;
-    background-color: #e7e8ea;
+    text-align: center;
 }
 #canvas{
-    margin-top: 50px;
-    margin-left: 50px;
-    background-color: #e7e8ea;
+
 }
 #hra{
-    box-sizing: border-box;
+
 }
 button{
-    align:left;
-    width: 100%;
-    height: 40px;
-    margin: 50px 0;
-    padding: 0;
-    box-sizing: border-box;
+
 }
+
+

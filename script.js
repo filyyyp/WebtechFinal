@@ -1,5 +1,7 @@
-const _puzzleHeight = document.getElementById('hra').clientWidth*0.8;
-const _puzzleWidth = document.getElementById('hra').clientWidth*0.8;
+//const _puzzleHeight = document.getElementById('hra').clientWidth*0.8;
+//const _puzzleWidth = document.getElementById('hra').clientWidth*0.8;
+const _puzzleHeight = document.getElementById('hra').clientWidth*0.9;
+const _puzzleWidth = document.getElementById('hra').clientWidth*0.9;
 
 const PUZZLE_HOVER_TINT = '#009900';
 var delimiter = "---"; //pre cookies
@@ -20,7 +22,7 @@ var _backup;
 
 var scorelvl;
 var scoreall = 0;
-var scoreAllPlayers;
+var scoreAllPlayers=[];
 var levelGame=0;
 var username = "guest";
 var backupSteps = 0;
@@ -530,7 +532,9 @@ function xml2json(xml) {
 }
 
 function readCookieToGame() {
-    if(_backup != undefined)
+    if(getCookie(username)!=""){
+
+        if(_backup != undefined)
         _backup.splice(0,3);     //vymazanie predchadzjucich krokov
     var myUserArray=getCookie(username);
 
@@ -576,15 +580,20 @@ function readCookieToGame() {
         }
     }
     drawImages();
+    }
+
 
 }
 
 function readScoreCookie() {
     var myUserArray=getCookie('score');
-    var score = myUserArray[0].split('%2C');
-    for(var i = 0;i<score.length;i=i+2){
-        addToScoreBoard(score[i],Number(score[i+1]));
+    if(getCookie('score')!=""){
+        var score = myUserArray[0].split('%2C');
+        for(var i = 0;i<score.length;i=i+2){
+            addToScoreBoard(score[i],Number(score[i+1]));
+        }
     }
+
 }
 
 function setUser(name) {
@@ -600,6 +609,7 @@ function setUser(name) {
     }
     if(sett===false)
         najvyssie.innerHTML = "Nemáte najvyššie skóre";
+    readCookieToGame();
 }
 
 function setCookie() {
@@ -651,9 +661,18 @@ function createCookie(name, value, days) {
 
 function getCookie(name) {
     var nameEquals = name + "=";
-    var whole_cookie=document.cookie.split(nameEquals)[1].split(";")[0]; // get only the value of the cookie we need
-    var crumbs=whole_cookie.split(delimiter);
-    return crumbs; // return the information parts as an array
+    if(document.cookie !=""){
+        try {
+            var whole_cookie = document.cookie.split(nameEquals)[1].split(";")[0]; // get only the value of the cookie we need
+            var crumbs = whole_cookie.split(delimiter);
+            return crumbs; // return the information parts as an array
+        }
+        catch (err){
+            console.log(err.message);
+        }
+    }
+    return "";
+
 }
 
 function deleteCookie(name){
@@ -667,9 +686,17 @@ function checkTime(i) {
     return i;
 }
 
+function addPlayer() {
+    var meno = document.getElementById("meno").value;
+    var skore = document.getElementById("skore").value;
+    addToScoreBoard(meno,skore);
+    setScoreCookie();
+    scoreTable();
+}
+
 function addToScoreBoard(name,score) {
     var add= false;
-    if(scoreAllPlayers === undefined){
+    if(scoreAllPlayers == []){
         scoreAllPlayers = [];
         var tmp = [];
         tmp.username=name;
@@ -694,21 +721,17 @@ function addToScoreBoard(name,score) {
 }
 
 function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    // add a zero in front of numbers<10
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('time').innerHTML = "Aktuálny čas: "+  h + ":" + m + ":" + s;
-    t = setTimeout(function() {
-        startTime()
-    }, 500);
+
+    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+
+    document.getElementById('time').innerHTML = "Aktuálny dátum: " + utc;
+
 }
 startTime();
 
 function scoreTable() {
+    if(scoreAllPlayers==[])
+        return 0;
     sortScore();
 
     var table = document.getElementById('najlepsiHraci');

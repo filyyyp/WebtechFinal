@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kniznica</title>
+    <link rel="stylesheet" href="bootstrap_v4-0-0-beta-2.css">
+    <link rel="stylesheet" href="js/flipclock.css">
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-sm-12 bg-info pb-4">
+            <button class="btn btn-primary input-group mt-2" onclick="actualTime()">Aktuálny čas</button>
+            <br>
+            <button class="btn btn-primary input-group" onclick="odpocet()">Odpočet do nového roku</button>
+            <br>
+            <button class="btn btn-primary input-group" onclick="pocitadlo()">Počítadlo</button>
+        </div>
+        <div class="col-lg-8 col-sm-12 bg-danger">
+            <p class="text-white">
+                Vybral som si knižnicu flipclock.js. Po kliknutí na tlačidlá sa vám zobrazia komkrétne príklady použitia tejto knižnice. Odkaz na dokumentáciu: <a class="alert-link" href="http://flipclockjs.com/">tu</a>.
+            </p>
+            <div class="clock" style="margin:2em;"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="bootstrap_v4-0-0-beta-2.js"></script>
+<script src="js/flipclock.js"></script>
+<script src="scriptKniznica.js"></script>
+</body>
+</html>
