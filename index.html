@@ -20,6 +20,14 @@
         <canvas id="canvas"></canvas>
     </div>
     <div class="col-6">
+        <div class="row">
+            <div class="col-3 p-0"><button onclick="stepBack()">Krok späť</button></div>
+            <div class="col-3 p-0"><button onclick="readCookieToGame()">Načítaj uloženú hru</button></div>
+            <div class="col-3 p-0"><button onclick="setCookie()">Ulož hru</button></div>
+            <div class="col-3 p-0"><button onclick="resetLevel()">Reštart kola</button></div>
+        </div>
+
+        <div><label>Zadajte meno: <input type="text" onchange="setUser(this.value)"></label></div>
         <div id="aktualnyLevel"></div>
         <div id="aktualneSkore"></div>
         <div id="celkoveSkore"></div>
@@ -29,13 +37,9 @@
 
 <div class="row">
     <div class="col-12">
-        <button onclick="stepBack()">BACK</button>
-        <button onclick="readCookieToGame('jozo')">Nacitaj ulozenu hru</button>
-        <button onclick="setCookie('jozo')">Uloz hru</button>
-        <button onclick="resetLevel()">Reset</button>
+
     </div>
 </div>
-
 
 
 

@@ -167,6 +167,7 @@
       <task>T90,B,E,S0,D0;B,E,D90,B,E;D0,E,B,B,B;E,B,E,B,B;F180,E,T270,E,D90</task>
       <solution>E,E,E,S0,E;E,E,E,D0,E;E,E,E,D0,E;T90,D90,D90,T270,E;F180,E,E,E,E</solution>
       <solution>E,E,E,S0,E;T90,D90,D90,T270,E;D0,E,E,E,E;D0,E,E,E,E;F180,E,E,E,E</solution>
+      <solution>E,E,E,S0,E;E,E,E,D0,E;T90,D90,D90,T270,E;D0,E,E,E,E;F180,E,E,E,E</solution>
     </game>
     <game>
       <size>

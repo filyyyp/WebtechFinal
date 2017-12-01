@@ -20,8 +20,9 @@ var _backup;
 
 var scorelvl;
 var scoreall = 0;
+var scoreAllPlayers;
 var levelGame=0;
-var username = "jozo";
+var username = "guest";
 var backupSteps = 0;
 var touchM = false;
 
@@ -38,17 +39,19 @@ function nextLevel() {
     _backup.splice(0,3);     //vymazanie predchadzjucich krokov
     levelGame++;
     scoreall = scoreall + scorelvl;
-    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
+    showActualStatus();
     if(levelGame < 10){
-        var levelhry =Number(levelGame);
-        levelhry++;
-        document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
-
         LoadGame(levelGame);
-        drawImages()
+        drawImages();
     }
     else {
         console.log("koniec hry")
+        addToScoreBoard(username,scoreall);
+        setScoreCookie();
+        scoreTable();
+        levelGame=0;
+        LoadGame(levelGame);
+        drawImages();
     }
 
 }
@@ -58,6 +61,8 @@ function init() {
     LoadGame(levelGame);
     setCanvas();
     drawImages();
+    readScoreCookie();
+    scoreTable();
 
     _canvas.onmousedown = onClick;
 
@@ -92,14 +97,7 @@ function LoadGame(level){
     _pieceHeight =_puzzleHeight / NumberOfBlocksHorizontal;
     var task = game.task;
     scorelvl = 1000;
-    var levelhry =Number(levelGame);
-    levelhry++;
-    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
-    document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
-    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
-
-
-
+    showActualStatus();;
 
     task =task.replace(/;/g,',');
 
@@ -163,7 +161,7 @@ function onClick(e){
 function onClickT(x,y){
     _mouse.x = x;
     _mouse.y = y;
-
+    console.log("aaa");
     _currentPiece = checkPieceClicked();
 
     if(_currentPiece != null){
@@ -531,29 +529,22 @@ function xml2json(xml) {
     }
 }
 
-function readCookieToGame(username) {
+function readCookieToGame() {
     if(_backup != undefined)
         _backup.splice(0,3);     //vymazanie predchadzjucich krokov
     var myUserArray=getCookie(username);
 
-    console.log(myUserArray[1].split('%2C'));
     levelGame = myUserArray[0];
     scorelvl = Number(myUserArray[2]);
     scoreall = Number(myUserArray[3]);
 
-    var levelhry =Number(levelGame);
-    levelhry++;
-    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
-    document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
-    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
-
+    showActualStatus();
 
     var game = json.rolltheball.games.game[levelGame];
     NumberOfBlocksHorizontal = game.size.horizontal;
     NumberOfBlocksVertical = game.size.vertical;
     _pieceWidth =_puzzleWidth / NumberOfBlocksVertical;
     _pieceHeight =_puzzleHeight / NumberOfBlocksHorizontal;
-
 
 
     var rows = myUserArray[1].split('%2C'); // tu sa vlozi aktualne rozohrana hra
@@ -588,7 +579,19 @@ function readCookieToGame(username) {
 
 }
 
-function setCookie(username) {
+function readScoreCookie() {
+    var myUserArray=getCookie('score');
+    var score = myUserArray[0].split('%2C');
+    for(var i = 0;i<score.length;i=i+2){
+        addToScoreBoard(score[i],Number(score[i+1]));
+    }
+}
+
+function setUser(name) {
+    username=name;
+}
+
+function setCookie() {
     var _piecesString = [];
     for(var i= 0;i<_pieces.length;i++){
         if(i<_pieces.length-1)
@@ -600,6 +603,20 @@ function setCookie(username) {
     //meno level rozohrane progressVsetkych skore
     var userdata=levelGame+delimiter+_piecesString +delimiter + scorelvl + delimiter + scoreall;
     createCookie(username, userdata);
+}
+
+function setScoreCookie(){
+    var _scoreAllPlayersString = "";
+    for(var i=0;i<scoreAllPlayers.length;i++){
+        if(i<(scoreAllPlayers.length-1)){
+            _scoreAllPlayersString += scoreAllPlayers[i].username + ',' + scoreAllPlayers[i].score + ',';
+        }
+        else
+            _scoreAllPlayersString += scoreAllPlayers[i].username + ',' + scoreAllPlayers[i].score;
+    }
+
+    console.log(_scoreAllPlayersString);
+    createCookie('score',_scoreAllPlayersString);
 }
 
 function createCookie(name, value, days) {
@@ -639,6 +656,32 @@ function checkTime(i) {
     return i;
 }
 
+function addToScoreBoard(name,score) {
+    var add= false;
+    if(scoreAllPlayers === undefined){
+        scoreAllPlayers = [];
+        var tmp = [];
+        tmp.username=name;
+        tmp.score=score;
+        scoreAllPlayers.push(tmp);
+        add = true;
+    }
+    for(var i=0;i<scoreAllPlayers.length;i++){
+        if(scoreAllPlayers[i].username == name){
+            add=true;
+            if(score>scoreAllPlayers[i].score)
+                scoreAllPlayers[i].score= score;
+        }
+    }
+    if(add==false){
+        var tmp = [];
+        tmp.username=name;
+        tmp.score=score;
+        scoreAllPlayers.push(tmp);
+    }
+
+}
+
 function startTime() {
     var today = new Date();
     var h = today.getHours();
@@ -653,3 +696,56 @@ function startTime() {
     }, 500);
 }
 startTime();
+
+function scoreTable() {
+    sortScore();
+
+    var table = document.getElementById('najlepsiHraci');
+    var tbl = document.createElement('table');
+    tbl.style.width = '90%';
+    tbl.setAttribute('border', '1');
+    tbl.style.textAlign = "center";
+    var tbdy = document.createElement('tbody');
+
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.appendChild(document.createTextNode("Nick"));
+    tr.appendChild(td);
+    var td = document.createElement('td');
+    td.appendChild(document.createTextNode('Skóre'));
+    tr.appendChild(td);
+    tbdy.appendChild(tr);
+
+
+    for (var i = 0; i < scoreAllPlayers.length; i++) {
+        var tr = document.createElement('tr');
+        for (var j = 0; j < 2; j++) {
+
+                var td = document.createElement('td');
+                if(j==0)
+                    td.appendChild(document.createTextNode(scoreAllPlayers[i].username));
+                else
+                    td.appendChild(document.createTextNode(scoreAllPlayers[i].score));
+                tr.appendChild(td)
+
+        }
+        tbdy.appendChild(tr);
+    }
+    tbl.appendChild(tbdy);
+    table.innerHTML = "";
+    table.appendChild(tbl);
+}
+
+function sortScore() {
+
+    scoreAllPlayers = scoreAllPlayers.sort(function(a, b){return b.score-a.score});
+}
+
+function showActualStatus() {
+    var levelhry =Number(levelGame);
+    levelhry++;
+    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
+    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
+    document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
+
+}
