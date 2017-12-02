@@ -12,4 +12,16 @@ button{
 
 }
 
+#btn{
+    background-color: #1c7430;
+    height: 200px;
+}
 
+.btn-primary{
+    background-color: red;
+    border-color: darkred;
+}
+
+.btn-primary:hover{
+    background-color: #c82333;
+}

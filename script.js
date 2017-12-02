@@ -778,8 +778,8 @@ function sortScore() {
 function showActualStatus() {
     var levelhry =Number(levelGame);
     levelhry++;
-    document.getElementById("celkoveSkore").innerText="Celkove skore je: " + scoreall;
-    document.getElementById("aktualnyLevel").innerText="Aktualny level: " + levelhry  + "/10";
-    document.getElementById("aktualneSkore").innerText="Aktualne skore je: " + scorelvl;
+    document.getElementById("celkoveSkore").innerText="Celkové skóre je: " + scoreall;
+    document.getElementById("aktualnyLevel").innerText="Aktuálny level: " + levelhry  + "/10";
+    document.getElementById("aktualneSkore").innerText="Aktuálne skóre je: " + scorelvl;
 
 }
