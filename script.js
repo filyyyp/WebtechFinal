@@ -1,5 +1,3 @@
-//const _puzzleHeight = document.getElementById('hra').clientWidth*0.8;
-//const _puzzleWidth = document.getElementById('hra').clientWidth*0.8;
 const _puzzleHeight = document.getElementById('hra').clientWidth*0.9;
 const _puzzleWidth = document.getElementById('hra').clientWidth*0.9;
 
@@ -38,7 +36,9 @@ $.ajax({
 });
 
 function nextLevel() {
-    _backup.splice(0,3);     //vymazanie predchadzjucich krokov
+    if(_backup != undefined)
+        _backup.splice(0,3);     //vymazanie predchadzjucich krokov
+
     levelGame++;
     scoreall = scoreall + scorelvl;
     showActualStatus();
@@ -52,6 +52,7 @@ function nextLevel() {
         setScoreCookie();
         scoreTable();
         levelGame=0;
+        scoreall=0;
         LoadGame(levelGame);
         drawImages();
     }
@@ -664,9 +665,9 @@ function getCookie(name) {
     var nameEquals = name + "=";
     if(document.cookie !=""){
         try {
-            var whole_cookie = document.cookie.split(nameEquals)[1].split(";")[0]; // get only the value of the cookie we need
+            var whole_cookie = document.cookie.split(nameEquals)[1].split(";")[0];
             var crumbs = whole_cookie.split(delimiter);
-            return crumbs; // return the information parts as an array
+            return crumbs;
         }
         catch (err){
             console.log(err.message);
