@@ -35,6 +35,8 @@ $.ajax({
     }
 });
 
+LoadImages();
+
 function nextLevel() {
     if(_backup != undefined)
         _backup.splice(0,3);     //vymazanie predchadzjucich krokov
@@ -60,7 +62,10 @@ function nextLevel() {
 }
 
 function init() {
-    LoadImages();
+    setTimeout(start,500);
+}
+
+function start() {
     LoadGame(levelGame);
     setCanvas();
     drawImages();
