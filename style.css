@@ -1,5 +1,5 @@
 #time{
-    font-size: 50px;
+    font-size: 2em;
     text-align: center;
 }
 #canvas{
@@ -24,4 +24,22 @@ button{
 
 .btn-primary:hover{
     background-color: #c82333;
+}
+
+.bg-primary{
+    background-color: red!important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.8);
+}
+
+#left{
+    background-color: #003eff;
+    border: solid #00118f;
+}
+
+#right{
+    background-color: #000f4e;
+    border: solid #000000;
 }

@@ -17,31 +17,34 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6" id="hra">
+        <div class="col-lg-6 col-sm-12" id="hra">
 
             <canvas id="canvas"></canvas>
 
         </div>
-        <div class="col-6">
+
+        <div class="col-lg-6 col-sm-12">
 
             <button class="btn btn-primary" onclick="stepBack()">Krok späť</button>
             <button class="btn btn-primary" onclick="readCookieToGame()">Načítaj uloženú hru</button>
             <button class="btn btn-primary" onclick="setCookie()">Ulož hru</button>
             <button class="btn btn-primary" onclick="resetLevel()">Reštart kola</button>
 
-            <div class="input-group mt-1">
-                <span class="input-group-addon" id="basic-addon1">Zadajte meno:</span>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" onchange="setUser(this.value)">
+            <div class="d-none d-md-block">
+                <div class="input-group mt-1">
+                    <span class="input-group-addon" id="basic-addon1">Zadajte meno:</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" onchange="setUser(this.value)">
+                </div>
+                <div id="aktualnyLevel"></div>
+                <div id="aktualneSkore"></div>
+                <div id="celkoveSkore"></div>
+                <div id="najvyssieDosiahnute"></div>
+                <div id="najlepsiHraci"></div>
             </div>
-            <div id="aktualnyLevel"></div>
-            <div id="aktualneSkore"></div>
-            <div id="celkoveSkore"></div>
-            <div id="najvyssieDosiahnute"></div>
-            <div id="najlepsiHraci"></div>
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 d-none d-md-block">
             <h4>Návod ako hrať hru:</h4>
             <p>
                 Premiestňuj bloky ťahaním tak, aby si vytvoril cestu od začiatku až po koniec. Môžeš využiť aj krok spät. Na začiatku kola máš vždy 1000 bodov a každým ťahom sa ti odráta 10 bodov.
@@ -50,36 +53,46 @@
             </p>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <a href="kniznica.html"> <button class="btn btn-secondary">Popísaná knižnica</button></a>
-        </div>
-    </div>
-    <div class="row pt-2">
-        <div class="col-12">
-            <h4>Formulár na nastavenie najlepšieho skóre užívateľa</h4>
-        </div>
-    </div>
-    <div class="row pt-2">
-        <div class="col-auto">
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon2">Meno</span>
-                <input id="meno" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
-            </div>
-        </div>
-        <div class="col-auto">
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon3">Skóre</span>
-                <input id="skore" type="text" class="form-control" placeholder="Score" aria-label="Score" aria-describedby="basic-addon3">
-            </div>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-primary" onclick="addPlayer()">Pridaj hráča do tabuľky</button>
-        </div>
-    </div>
-
-
 </div>
+
+
+
+<footer class="footer">
+    <div class="container-fluid pt-2">
+        <nav class="navbar navbar-expand navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">Roll the ball</a>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="kniznica.html">Popísaná knižnica</a>
+                    </li>
+                    <li class="nav-item dropdown dropup">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Nastavenie skóre
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="container">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">Meno</span>
+                                    <input id="meno" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
+                                </div>
+
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon3">Skóre</span>
+                                    <input id="skore" type="text" class="form-control" placeholder="Score" aria-label="Score" aria-describedby="basic-addon3">
+                                </div>
+
+                                <button class="btn btn-primary" onclick="addPlayer()">Pridaj hráča do tabuľky</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</footer>
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

@@ -69,7 +69,7 @@ function init() {
     _canvas.onmousedown = onClick;
 
     $('#canvas').on("touchstart", function (e, touch) {
-        onClickT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop)));
+        onClickT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft+document.getElementById('canvas').offsetParent.offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop+document.getElementById('canvas').offsetParent.offsetParent.offsetTop)));
         touchM=true;
     });
 
@@ -174,7 +174,8 @@ function onClickT(x,y){
         _stage.restore();
 
         $('#canvas').on("touchmove", function (e, touch) {
-            updatePiecesMoveT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop)));
+            //updatePiecesMoveT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop)));
+            updatePiecesMoveT((e.originalEvent.touches[0].clientX-(document.getElementById('canvas').offsetLeft+document.getElementById('canvas').offsetParent.offsetLeft)),(e.originalEvent.touches[0].clientY-(document.getElementById('canvas').offsetParent.offsetTop+document.getElementById('canvas').offsetTop+document.getElementById('canvas').offsetParent.offsetParent.offsetTop)));
         });
 
         $('#canvas').on("touchend", function (e, touch) {

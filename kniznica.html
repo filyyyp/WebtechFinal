@@ -5,20 +5,21 @@
     <title>Kniznica</title>
     <link rel="stylesheet" href="bootstrap_v4-0-0-beta-2.css">
     <link rel="stylesheet" href="js/flipclock.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
 
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4 col-sm-12 bg-info pb-4">
+        <div class="col-lg-4 col-sm-12 pb-4" id="left">
             <button class="btn btn-primary input-group mt-2" onclick="actualTime()">Aktuálny čas</button>
             <br>
             <button class="btn btn-primary input-group" onclick="odpocet()">Odpočet do nového roku</button>
             <br>
             <button class="btn btn-primary input-group" onclick="pocitadlo()">Počítadlo</button>
         </div>
-        <div class="col-lg-8 col-sm-12 bg-danger">
+        <div class="col-lg-8 col-sm-12" id="right">
             <p class="text-white">
                 Vybral som si knižnicu flipclock.js. Po kliknutí na tlačidlá sa vám zobrazia komkrétne príklady použitia tejto knižnice. Odkaz na dokumentáciu: <a class="alert-link" href="http://flipclockjs.com/">tu</a>.
             </p>
